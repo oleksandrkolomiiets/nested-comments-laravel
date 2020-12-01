@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,17 +17,25 @@ class Comment extends Model
         'comment_id',
     ];
 
+    protected $with = [
+        'user',
+    ];
+
+    /**
+     * @param DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('d M Y H:i');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    public function nestedComments(): HasMany
     {
         return $this->hasMany(Comment::class)->with('comments');
     }

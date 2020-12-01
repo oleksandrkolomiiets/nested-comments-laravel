@@ -1,11 +1,11 @@
 <template>
-    <div class="p-8 m-4 overflow-y-scroll max-h-2/3">
+    <div class="p-2 m-2 border-l">
         <slot/>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'comments-list',
+        name: 'sub-comments-list',
     }
 </script>

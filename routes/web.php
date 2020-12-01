@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
+Route::group(['middleware' => config('jetstream.middleware', ['auth', 'verified'])], function () {
+    Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
+        Route::get('/', [DashboardController::class, 'show'])->name('show');
+    });
+
+    Route::group(['prefix' => 'comments', 'as' => 'comments.'], function () {
+        Route::post('/', [CommentController::class, 'store'])->name('store');
+
+        Route::delete('{comment}', [CommentController::class, 'destroy'])
+            ->middleware(['can:destroy,comment'])
+            ->name('destroy');
+    });
+});

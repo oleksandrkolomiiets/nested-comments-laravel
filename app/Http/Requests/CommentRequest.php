@@ -6,15 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CommentRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
+    protected $errorBag = 'storeComment';
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,7 +16,8 @@ class CommentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'comment_id' => 'nullable',
+            'text' => 'required|string',
         ];
     }
 }
